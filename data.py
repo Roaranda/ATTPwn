@@ -597,7 +597,8 @@ def insert_inteligence():
         models.Inteligence_DB(IDIntel = '320',IDTactic= 'TA0005', IDTech = 'T1088', Function = 'invoke-environmentInjection', Terminated = 'True'),
         models.Inteligence_DB(IDIntel = '321',IDTactic= 'TA0005', IDTech = 'T1211', Function = "invoke-disableDefender", Terminated = 'False'),
         models.Inteligence_DB(IDIntel = '322',IDTactic= 'TA0005', IDTech = 'T1211', Function = "invoke-bypassAmsiHijackingDLL", Terminated = 'False'),
-        models.Inteligence_DB(IDIntel = '323',IDTactic= 'TA0005', IDTech = 'T1211', Function = "invoke-disableDefender-bifurcated", Terminated = 'True')
+        models.Inteligence_DB(IDIntel = '323',IDTactic= 'TA0005', IDTech = 'T1211', Function = "invoke-disableDefender-bifurcated", Terminated = 'True'),
+		models.Inteligence_DB(IDIntel = '324',IDTactic= 'TA0007', IDTech = 'T1046', Function = 'invoke-GetService', Terminated = 'False')
       ]
     s.bulk_save_objects(objects)
     s.commit()
