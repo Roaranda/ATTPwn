@@ -1,0 +1,40 @@
+#Title: invoke-getSoftware
+#Technique: T1518
+#Tactic: TA0007
+
+function invoke-getSoftware {
+    <#
+    .SYNOPSIS
+    List installed programs in the system
+
+    .DESCRIPTION
+    Attack Commands: Run with command_prompt! Elevation is not Required (e.g. root or admin)
+
+    .LINK
+
+
+    #>
+    $good = $false
+    $results = $null
+    $results = Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion | Out-String
+
+    if ( -not $results -eq "")
+    {
+      	$good = $True
+    }
+    return @{results=$results;success=$good}
+}
+
+
+#Main program
+$execute = {
+}
+
+#GiveMeData if needed
+
+#get-credentials
+$execute = invoke-getSoftware
+
+#PutData if needed
+
+return @{results=$execute.results;success=$execute.success}

