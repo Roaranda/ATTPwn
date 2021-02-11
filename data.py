@@ -603,7 +603,8 @@ def insert_inteligence():
 		models.Inteligence_DB(IDIntel = '324',IDTactic= 'TA0007', IDTech = 'T1046', Function = 'invoke-GetService', Terminated = 'False'),
 		models.Inteligence_DB(IDIntel = '325',IDTactic= 'TA0007', IDTech = 'T1518', Function = 'invoke-GetPrograms', Terminated = 'False'),
 		models.Inteligence_DB(IDIntel = '326',IDTactic= 'TA0010', IDTech = 'T1567', Function = 'invoke-exfiltrationWeb', Terminated = 'False'),
-		models.Inteligence_DB(IDIntel = '327',IDTactic= 'TA0010', IDTech = 'T1567', Function = 'invoke-exfiltrationDropbox', Terminated = 'False')
+		models.Inteligence_DB(IDIntel = '327',IDTactic= 'TA0010', IDTech = 'T1567', Function = 'invoke-exfiltrationDropbox', Terminated = 'False'),
+		models.Inteligence_DB(IDIntel = '328',IDTactic= 'TA0004', IDTech = 'T1088', Function = 'invoke-fodhelper', Terminated = 'True'),
       ]
     s.bulk_save_objects(objects)
     s.commit()

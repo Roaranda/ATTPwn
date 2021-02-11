@@ -17,18 +17,16 @@ function invoke-getService
     $good = $false
     $results = $null
     $results = Get-Service | Where-Object {$_.Status -eq "Running"} | Select-Object Displayname | Out-String
-    if( -not $results -eq "")
-        {
+    if( $results -ne "") {
         $good = $True
-        }
-
+    }
     return @{results=$results;success=$good}
     }
 
 
 #Main program
 $execute = {
-  
+
 }
 
 #GiveMeData if needed

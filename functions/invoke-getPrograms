@@ -1,4 +1,4 @@
-#Title: invoke-getSoftware
+#Title: invoke-getPrograms
 #Technique: T1518
 #Tactic: TA0007
 
@@ -17,9 +17,7 @@ function invoke-getSoftware {
     $good = $false
     $results = $null
     $results = Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion | Out-String
-
-    if ( -not $results -eq "")
-    {
+    if ($results -ne "") {
       	$good = $True
     }
     return @{results=$results;success=$good}
